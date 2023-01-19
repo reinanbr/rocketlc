@@ -45,7 +45,7 @@ jobs:
           command: python3 -m pytest
       - persist_to_workspace:
           root: ~/rocketcl
-          paths: .
+          paths: tests
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
