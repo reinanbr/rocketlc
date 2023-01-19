@@ -30,6 +30,7 @@ def launchs(page_limit:int=2)-> list:
         div_mother = canaveral.find('div',{'class':'col-lg-8'})
         
         divs = div_mother.find_all('div')
+        #print(divs)
         for dv in divs:
             if ('my-2' in dv['class']) and ('container' in dv['class']):
                 name = dv.find('span',{'class':'mt-2'}).text
@@ -39,15 +40,16 @@ def launchs(page_limit:int=2)-> list:
                 #print(time_lst,len(time_lst))
                 loc = dv.find('div',{'class':'mb-0'}).text.replace('\n','')
                 style_dv = dv.find('div',{'class':'launch-list-thumbnail'})['style']
-                print(style_dv)
+                #print(style_dv)
                 url_img = style_dv.split(':')[-1].split('url(')[-1].replace(')','').replace(';','').replace('//','')
                 #img_url = css.parseStyle(style_dv)['background-image']
+                #print(time_lst)
                 if  'Projected To Launch' in time_lst:
                     date = time_lst[2]
                     hour = None
                 else:
-                    date = time_lst[1]
-                    hour = time_lst[2]
+                    date = time_lst[0].split(',')[0]
+                    hour = time_lst[0].split(',')[1]
                 
                 rocket = {'name':name,
                           'mission':mission,
