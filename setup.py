@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
     readme = fh.read()
 
 setup(name='rocketlc',
-    version='0.0.1.1.1',
+    version='0.0.2',
     url='https://github.com/reinanbr/rocketlc',
     license='BSD v3',
     author='Reinan Br',
@@ -18,4 +18,4 @@ setup(name='rocketlc',
     keywords='rocket launch schedule',
     description=u"Library for getting schedule launch rocket",
     packages=find_packages(),
-    install_requires=['requests','mechanicalsoup','bs4'],)
+    install_requires=['requests','mechanicalsoup','cssutils','bs4'],)

@@ -2,13 +2,14 @@
 <br> -->
 <div align='center'>
 <h2>Rocketlc</h2>
-<pgetting schedule launch rocket</p>
-<a href='https://pypi.org/project/rocketlc/'><img src='https://img.shields.io/pypi/v/rocketlc'></a>
+<p>getting schedule launch rocket</p>
+
 
 <img alt="CodeFactor Grade" src="https://img.shields.io/codefactor/grade/github/reinanbr/rocketlc?logo=codefactor">
+<img alt="CircleCI" src="https://img.shields.io/circleci/build/gh/reinanbr/rocketlc">
 <img src='https://img.shields.io/pypi/wheel/rocketlc'>
 <br>
-
+<a href='https://pypi.org/project/rocketlc/'><img src='https://img.shields.io/pypi/v/rocketlc'></a>
 
 <img alt="PyPI - Downloads" src="https://img.shields.io/pypi/dm/rocketlc">
 <img src='https://img.shields.io/github/last-commit/reinanbr/rocketlc'>
