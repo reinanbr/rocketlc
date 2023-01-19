@@ -42,7 +42,7 @@ jobs:
       - run:
           name: Run tests
           # This assumes pytest is installed via the install-package step above
-          command: python -m pytest
+          command: python3 -m pytest
       - persist_to_workspace:
           root: ~/rocketcl
           paths: .
