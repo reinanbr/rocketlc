@@ -1,4 +1,4 @@
-import pytest
+
 import rocketlc.space_schedulle_launch as ssl
 
 
@@ -9,3 +9,5 @@ def test_sll():
     for rc in rcs:
         print(f'[{i}]',rc,'\n')
         i = i + 1
+        
+test_sll()

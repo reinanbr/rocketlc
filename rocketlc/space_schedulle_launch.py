@@ -1,12 +1,10 @@
-
-
 from bs4 import BeautifulSoup as bs
 import mechanicalsoup as mec
 import cssutils as css
 import time as tm
+from rocketlc.tools_ssl import get_time
 
-
-headers = {'User-Agent':'Mozilla/5.0 (Linux; U; Android 4.4.2; zh-cn; GT-I9500 Build/KOT49H) AppleWebKit/537.36(KHTML, like Gecko)Version/4.0 MQQBrowser/5.0 QQ-URL-Manager Mobile Safari/537.36',
+headers = {'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36',
             'connection': 'keep-alive', 'upgrade-insecure-requests': '1', 
 #            'user-agent': 'Mozilla/5.0 (Linux; Android 12; SM-A225M) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Mobile Safari/537.36',
             'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
@@ -36,27 +34,24 @@ def launchs(page_limit:int=2)-> list:
                 name = dv.find('span',{'class':'mt-2'}).text
                 mission = dv.find('h2',{'class':'h4'}).text.replace('\n','')
                 mother = dv.find('h3',{'class':'h6'}).text
-                time_lst = dv.find('time').text.split('\n')
-                #print(time_lst,len(time_lst))
+                time_lst = dv.find('time',{'class':"launchDateTime"})['datetime']
                 loc = dv.find('div',{'class':'mb-0'}).text.replace('\n','')
-                style_dv = dv.find('div',{'class':'launch-list-thumbnail'})['style']
-                #print(style_dv)
-                url_img = style_dv.split(':')[-1].split('url(')[-1].replace(')','').replace(';','').replace('//','')
-                #img_url = css.parseStyle(style_dv)['background-image']
-                #print(time_lst)
-                if  'Projected To Launch' in time_lst:
-                    date = time_lst[2]
-                    hour = None
-                else:
-                    date = time_lst[0].split(',')[0]
-                    hour = time_lst[0].split(',')[1]
                 
+                style_a = dv.find('a',{'class':'launch-list-thumbnail'})['style']
+                a_img = dv.find('a',{'class':'ezlazyload'})
+              
+                url_img = a_img['data-ezbg'] if a_img else style_a.split(':')[-1].split('url(')[-1].replace(')','').replace(';','').replace('//','')
+                url_img = url_img.split('?')[0]
+
+                time_launch = get_time(time_lst)
                 rocket = {'name':name,
                           'mission':mission,
                           'empire':mother,
-                          'date':date,
-                          'hour':hour,
+                          'datetime':time_lst,
                           'location':loc,
+                          'res_seconds':time_launch['res_seconds'],
+                          'hour':time_launch['hour'],
+                          'date':time_launch['date'],
                           'img_url':url_img
                           }
                 rockets.append(rocket)
