@@ -31,14 +31,15 @@ def launchs(page_limit:int=2)-> list:
         #print(divs)
         for dv in divs:
             if ('my-2' in dv['class']) and ('container' in dv['class']):
-                # print(dv)
+                #print(dv)
                 name = dv.find('span',{'class':'mt-2'}).text
                 mission = dv.find('h2',{'class':'h4'}).text.replace('\n','')
                 mother = dv.find('h3',{'class':'h6'}).text
                 
-                time_lst = dv.find('time',{'class':"launchDateTime"})['datetime']
-                launch_time = dv.find('time',{'class':'launchDateTime'}).get('launch-window-end-utc',None)
-                time_lst = launch_time if launch_time else time_lst
+                time_lst = dv.find('time',{'class':"launchDateTime"})
+                time_lst = time_lst.get('datetime',None) if time_lst else dv.find('time').get('datetime',None)
+                launch_time = dv.find('time',{'class':'launchDateTime'})
+                time_lst = launch_time.get('launch-window-end-utc',None) if launch_time else time_lst
                 
                 loc = dv.find('div',{'class':'mb-0'}).text.replace('\n','')
                 
