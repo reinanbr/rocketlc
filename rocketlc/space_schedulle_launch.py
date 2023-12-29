@@ -36,10 +36,10 @@ def launchs(page_limit:int=2)-> list:
                 mission = dv.find('h2',{'class':'h4'}).text.replace('\n','')
                 mother = dv.find('h3',{'class':'h6'}).text
                 
-                time_lst = dv.find('time',{'class':"launchDateTime"})
-                time_lst = time_lst.get('datetime',None) if time_lst else dv.find('time').get('datetime',None)
+                time_usd = dv.find('time',{'class':"launchDateTime"})
+                time_usd = time_usd.get('datetime',None) if time_usd else dv.find('time').get('datetime',None)
                 launch_time = dv.find('time',{'class':'launchDateTime'})
-                time_lst = launch_time.get('launch-window-end-utc',None) if launch_time else time_lst
+                time_usd = launch_time.get('launch-window-end-utc',None) if launch_time else time_usd
                 
                 loc = dv.find('div',{'class':'mb-0'}).text.replace('\n','')
                 
@@ -49,18 +49,19 @@ def launchs(page_limit:int=2)-> list:
                 url_img = a_img['data-ezbg'] if a_img else style_a.split(':')[-1].split('url(')[-1].replace(')','').replace(';','').replace('//','')
                 url_img = url_img.split('?')[0]
 
-                time_launch = get_time(time_lst)
+                time_launch = get_time(time_usd)
                 rocket = {'name':name,
                           'mission':mission,
                           'empire':mother,
-                          'datetime':time_lst,
+                          'datetime':time_usd,
                           'location':loc,
                           'res_seconds':time_launch['res_seconds'],
                           'hour':time_launch['hour'],
                           'date':time_launch['date'],
                           'img_url':url_img
                           }
-                rockets.append(rocket)
+                if time_launch['res_seconds']>0:
+                    rockets.append(rocket)
                 
             
         p = p+1
