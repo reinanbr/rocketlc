@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
     readme = fh.read()
 
 setup(name='rocketlc',
-    version='0.1.4.2',
+    version='0.1.4.7',
     url='https://github.com/reinanbr/rocketlc',
     license='BSD v3',
     author='Reinan Br',

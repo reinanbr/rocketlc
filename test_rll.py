@@ -1,4 +1,4 @@
-import pytest
+#import pytest
 from rocketlc import past_launchs as pl, future_launchs as fl
 
 
@@ -21,3 +21,5 @@ def test_rll():
     for l in fls['rockets']:
         print(f'[{i}]',l,'\n')
         i=i+1
+
+test_rll()

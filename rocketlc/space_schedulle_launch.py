@@ -3,17 +3,73 @@ import mechanicalsoup as mec
 import cssutils as css
 import time as tm
 from rocketlc.tools_ssl import get_time
+import os
+import pickle
 
+
+# config cookies
+if not os.path.isdir(".cache/"):
+    os.mkdir(".cache/")
+
+cookie_file = ".cache/cookies_ssl.pkl"
+headers_file = ".cache/headers_ssl.pkl"
+
+br = mec.StatefulBrowser()
+
+url_base = 'https://www.spacelaunchschedule.com'
+'''
+headers = {
+    "authority": url_base,
+    "method": "GET",
+    "path": "/",
+    "scheme": "https",
+    "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
+    "accept-encoding": "gzip, deflate, br, zstd",
+    "accept-language": "en-US,en;q=0.6",
+    "cache-control": "max-age=0",
+    "priority": "u=0, i",
+    "sec-ch-ua": '"Brave";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
+    "sec-ch-ua-arch": '"x86"',
+    "sec-ch-ua-bitness": '"64"',
+    "sec-ch-ua-full-version-list": '"Brave";v="131.0.0.0", "Chromium";v="131.0.0.0", "Not_A Brand";v="24.0.0.0"',
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-model": '""',
+    "sec-ch-ua-platform": '"Linux"',
+    "sec-ch-ua-platform-version": '"6.11.2"',
+    "sec-ch-ua-wow64": "?0",
+    "sec-fetch-dest": "document",
+    "sec-fetch-mode": "navigate",
+    "sec-fetch-site": "none",
+    "sec-fetch-user": "?1",
+    "sec-gpc": "1",
+    "upgrade-insecure-requests": "1",
+    "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
+}
+'''
 headers = {'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36',
-            'connection': 'keep-alive', 'upgrade-insecure-requests': '1', 
+            'connection': 'keep-alive', 'upgrade-insecure-requests': '1',
 #            'user-agent': 'Mozilla/5.0 (Linux; Android 12; SM-A225M) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Mobile Safari/537.36',
             'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
             'accept-encoding': 'gzip, deflate',
             'accept-language': 'pt-BR,pt-PT;q=0.9,pt;q=0.8,en-US;q=0.7,en;q=0.6'}
 
-url_base = 'https://www.spacelaunchschedule.com'
 
-br = mec.StatefulBrowser()
+try:
+    with open(cookie_file, "rb") as f:
+        cookies = pickle.load(f)
+        br.session.cookies.update(cookies)
+#        print("✅ Cookies carregados com sucesso!")
+
+    with open(headers_file, "rb") as f:
+        headers = pickle.load(f)
+#        print("✅ Headers carregados com sucesso!")
+
+except FileNotFoundError:
+    print("⚠️ Cookies file not found. Building new file cookies in '.cache/'.")
+
+
+
+#br = mec.StatefulBrowser()
 br.session.headers = headers
 br.session.headers.update(headers)
 
@@ -23,8 +79,16 @@ def launchs(page_limit:int=2)-> list:
     for i in range(page_limit):
         url = f'{url_base}/page/{p}/'
         url_html = br.get(url)
+
+        # saving cookie
+        with open(cookie_file, "wb") as f:
+            pickle.dump(br.session.cookies, f)
+        with open(headers_file, "wb") as f:
+            pickle.dump(br.session.headers, f)
+
         url_html = url_html.text
         canaveral = bs(url_html,features="html.parser")
+#        print(canaveral)
         div_mother = canaveral.find('div',{'class':'col-lg-8'})
         
         divs = div_mother.find_all('div')
