@@ -8,11 +8,8 @@ import pickle
 import re
 
 # config cookies
-if not os.path.isdir(".cache/"):
-    os.mkdir(".cache/")
-
-cookie_file = ".cache/cookies_nsf.pkl"
-headers_file = ".cache/headers_nsf.pkl"
+cookie_file = "/tmp/cookies_nsf.pkl"
+headers_file = "/tmp/headers_nsf.pkl"
 
 br = mec.StatefulBrowser()
 

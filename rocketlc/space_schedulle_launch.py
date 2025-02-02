@@ -8,11 +8,8 @@ import pickle
 
 
 # config cookies
-if not os.path.isdir(".cache/"):
-    os.mkdir(".cache/")
-
-cookie_file = ".cache/cookies_ssl.pkl"
-headers_file = ".cache/headers_ssl.pkl"
+cookie_file = "/tmp/cookies_ssl.pkl"
+headers_file = "/tmp/test.png/headers_ssl.pkl"
 
 br = mec.StatefulBrowser()
 
